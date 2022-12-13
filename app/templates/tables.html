@@ -1,0 +1,143 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container px-4 text-center">
+        <div class="row g-5">
+
+
+            {#Добавление арендарота#}
+            <div class="col">
+                <div class="p-3 border bg-light">
+                    <h1 class="display-6">Добавление арендатора</h1>
+                    <form action="" method="post" class="form-contact">
+                        {{ tenant_form.csrf_token() }}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Ф.И.О</span>
+                            {{ tenant_form.full_name(class="form-control") }}
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">+7</span>
+                            {{ tenant_form.phone_number(class="form-control", placeholder="Введите номер телефона") }}
+                        </div>
+                        {{ tenant_form.submit(class="btn btn-primary btn-sm") }}
+                    </form>
+                </div>
+            </div>
+
+
+            {#Добавление апартамента#}
+            <div class="col">
+                <div class="p-3 border bg-light">
+                    <h1 class="display-6">Добавление апартамента</h1>
+
+                    <form action="" method="post">
+                        {{ apartment_form.csrf_token() }}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Адрес</span>
+                            {{ apartment_form.address(class="form-control", placeholder="Введите адрес") }}
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Цена</span>
+                            {{ apartment_form.price(class="form-control", placeholder="Введите цену") }}
+                        </div>
+                        {{ apartment_form.submit(class="btn btn-primary btn-sm") }}
+                    </form>
+                </div>
+            </div>
+
+
+            {# Привязывание #}
+            <div class="col">
+                <div class="p-3 border bg-light">
+                    <h1 class="display-6">Привязывание апартамента</h1>
+                    <form method="post" class="form-contact">
+                        {{ allform.csrf_token() }}
+
+                        {# Апартамент #}
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Апартамент</label>
+                            {{ allform.apartments(class="form-select") }}
+                        </div>
+
+                        {# Адрендатор #}
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Адрендатор</label>
+                            {{ allform.tenants(class="form-select") }}
+                        </div>
+                        {{ allform.submit(class="btn btn-primary btn-sm") }}
+                    </form>
+                </div>
+            </div>
+
+
+            {# Таблица управления Арендатора #}
+            <div class="row g-2">
+                <div class="col-15">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Полное имя</th>
+                            <th scope="col">Номер телефона</th>
+                            <th scope="col">Адрес</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for tenant in tenants %}
+                            <tr>
+                                <th scope="row">{{ tenant.id }}</th>
+                                <td>{{ tenant.full_name }}</td>
+                                <td>{{ tenant.phone_number }}</td>
+                                <td>{{ tenant.apartments.address }}</td>
+                                <td>
+                                    <form action="{{ url_for('delete', idsd=tenant["id"]) }}" method="POST">
+                                        {{ tenant_delate_form.submit(class="btn btn-primary btn-sm") }}
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            {# Таблица управления Апартамента #}
+            <div class="row g-2">
+                <div class="col-15">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Полное имя</th>
+                            <th scope="col">Номер телефона</th>
+                            <th scope="col">Адрес</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for apartment in apartments %}
+                            <tr>
+                                <th scope="row">{{ apartment.id }}</th>
+                                <td>{{ apartment.address }}</td>
+                                <td>{{ apartment.price }}</td>
+                                <td>{{ apartment }}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
